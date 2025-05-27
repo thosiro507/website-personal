@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Toko Makmur</title>
+<style>
+  /* Reset */
+  *, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f6f2;
+    color: #2c3e27;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  a {
+    color: #2f7a2f;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  a:hover, a:focus {
+    color: #56b356;
+    outline: none;
+  }
+
+  /* Container */
+  .container {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  /* Header */
+  header {
+    background: #2f7a2f;
+    color: #ecf0e7;
+    box-shadow: 0 2px 10px rgba(47,122,47,0.7);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+  }
+  .logo {
+    font-size: 1.9rem;
+    font-weight: 900;
+    letter-spacing: 3px;
+    user-select: none;
+    font-style: italic;
+  }
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2.5rem;
+  }
+  nav li {
+    position: relative;
+  }
+  nav li::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background-color: #56b356;
+    border-radius: 2px;
+    transition: width 0.3s ease;
+  }
+  nav li:hover::after,
+  nav li:focus-within::after {
+    width: 100%;
+  }
+  nav a {
+    color: #ecf0e7;
+    font-weight: 600;
+    font-size: 1.05rem;
+  }
+  nav a:focus-visible {
+    outline: 3px solid #a4de8c;
+    outline-offset: 2px;
+  }
+
+  /* Hero Banner */
+  .hero {
+    margin: 2rem 0 3rem;
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    height: 380px;
+    box-shadow: 0 0 30px #56b356aa;
+  }
+  .hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.75);
+    transition: transform 0.5s ease;
+  }
+  .hero:hover img {
+    transform: scale(1.05);
+  }
+  .hero-text {
+    position: absolute;
+    top: 50%;
+    left: 4%;
+    transform: translateY(-50%);
+    color: #ecf0e7;
+    max-width: 600px;
+    text-shadow: 0 3px 10px rgba(0,0,0,0.7);
+  }
+  .hero-text h1 {
+    font-size: 3rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+    letter-spacing: 3px;
+  }
+  .hero-text p {
+    font-size: 1.3rem;
+    font-weight: 500;
+  }
+  /* Call to action Button */
+  .btn-cta {
+    margin-top: 1.4rem;
+    background: #56b356;
+    color: #f0f6f2;
+    padding: 0.65rem 1.75rem;
+    border-radius: 30px;
+    font-weight: 700;
+    box-shadow: 0 5px 15px #419641dd;
+    font-size: 1rem;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+  }
+  .btn-cta:hover {
+    background: #3f6c3f;
+    box-shadow: 0 7px 20px #2a4d2aee;
+  }
+
+  /* Main layout */
+  main {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 2.5rem;
+    margin-bottom: 4rem;
+    min-height: 600px;
+  }
+
+  /* Featured products */
+  section.featured-products {
+    margin-bottom: 3rem;
+  }
+  section.featured-products h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #2f7a2f;
+    border-left: 8px solid #56b356;
+    padding-left: 12px;
+    margin-bottom: 1.6rem;
+    user-select: none;
+  }
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(280px,1fr));
+    gap: 2rem;
+  }
+  article.product-card {
+    background: #e9f2e7;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(86,179,86,0.3);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  article.product-card:hover {
+    box-shadow: 0 17px 40px rgba(70,150,70,0.6);
+    transform: translateY(-6px);
+  }
+  article.product-card img {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+  }
+  .product-info {
+    padding: 1rem 1.2rem 1.6rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .product-info h3 {
+    font-weight: 700;
+    font-size: 1.3rem;
+    margin-bottom: 0.55rem;
+    color: #2f7a2f;
+  }
+  .product-info p {
+    flex-grow: 1;
+    font-size: 1rem;
+    color: #557a55;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+  }
+  .product-info .price {
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: #3c693c;
+  }
+  /* Blog posts */
+  section.blog-posts {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  section.blog-posts h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #2f7a2f;
+    margin-bottom: 1.5rem;
+    border-left: 8px solid #56b356;
+    padding-left: 12px;
+    user-select: none;
+  }
+  article.blog-post {
+    background: #f0f9f0;
+    padding: 1.5rem 1.6rem;
+    border-radius: 14px;
+    box-shadow: 0 8px 20px rgba(86,179,86,0.2);
+    transition: box-shadow 0.3s ease;
+  }
+  article.blog-post:hover {
+    box-shadow: 0 15px 40px rgba(70,150,70,0.45);
+  }
+  article.blog-post h4 {
+    font-size: 1.3rem;
+    margin-bottom: 0.6rem;
+    color: #3f8a3f;
+    font-weight: 700;
+  }
+  article.blog-post time {
+    font-size: 0.85rem;
+    color: #749974;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 1rem;
+    display: block;
+  }
+  article.blog-post p {
+    font-size: 1rem;
+    color: #577655;
+    line-height: 1.5;
+  }
+
+  /* Sidebar */
+  aside.sidebar {
+    background: #d9e8d9;
+    padding: 2rem 1.8rem;
+    border-radius: 16px;
+    box-shadow: 0 12px 35px rgba(38,106,38,0.3);
+    color: #365a36;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+  }
+
+  .sidebar-section h3 {
+    color: #2f7a2f;
+    font-size: 1.4rem;
+    font-weight: 700;
+    border-bottom: 3px solid #56b356;
+    padding-bottom: 0.3rem;
+    margin-bottom: 1.6rem;
+    user-select: none;
+  }
+  ul.category-list, ul.popular-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.95rem;
+  }
+  ul.category-list li a {
+    color: #3b6a3b;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 7px 8px;
+    border-radius: 7px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  ul.category-list li a:hover,
+  ul.category-list li a:focus {
+    background-color: #56b356cc;
+    color: #e9f5e9;
+    outline: none;
+  }
+  ul.popular-list li {
+    background: #c1d8c1;
+    padding: 0.8rem 1rem;
+    border-radius: 13px;
+    box-shadow: 0 3px 10px #8dbf8dcc;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  ul.popular-list li:hover,
+  ul.popular-list li:focus {
+    background-color: #95c595;
+    outline: none;
+  }
+  ul.popular-list li span {
+    display: block;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #2c4d2c;
+  }
+  ul.popular-list li small {
+    color: #577c57aa;
+    font-size: 0.82rem;
+  }
+
+  /* Footer */
+  footer {
+    background: #2f7a2f;
+    color: #d7ebd7;
+    padding: 1.8rem 1rem;
+    text-align: center;
+    font-size: 0.92rem;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    border-top: 1px solid #56b356;
+    user-select: none;
+    box-shadow: 0 -4px 10px rgba(47,122,47,0.45);
+  }
+
+  /* Responsive */
+  @media (max-width: 980px) {
+    main {
+      grid-template-columns: 1fr;
+    }
+    aside.sidebar {
+      margin-top: 3rem;
+      position: relative;
+      padding: 2rem 1.2rem;
+    }
+  }
+  @media (max-width: 480px) {
+    header .container {
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    nav ul {
+      gap: 1rem;
+    }
+    .hero-text {
+      left: 6%;
+      max-width: 90%;
+    }
+    .hero-text h1 {
+      font-size: 2rem;
+    }
+    .btn-cta {
+      padding: 0.55rem 1.5rem;
+      font-size: 0.95rem;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <div class="logo" aria-label="Logo Blog Toko Sembako">Toko Makmur</div>
+    <nav aria-label="Navigasi utama">
+      <ul role="menubar">
+        <li role="none"><a href="#" role="menuitem" tabindex="0">Beranda</a></li>
+        <li role="none"><a href="#" role="menuitem" tabindex="0">Produk</a></li>
+        <li role="none"><a href="#" role="menuitem" tabindex="0">Tips & Artikel</a></li>
+        <li role="none"><a href="#" role="menuitem" tabindex="0">Promo</a></li>
+        <li role="none"><a href="#" role="menuitem" tabindex="0">Kontak</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" aria-label="Banner utama toko sembako">
+  <img src="https://images.unsplash.com/photo-1582515073490-d52e1919a0c5?auto=format&fit=crop&w=1470&q=80" alt="Gambar produk sembako segar andalan toko" />
+  <div class="hero-text">
+    <h1>Selamat Datang di Toko makmur</h1>
+    <p>Kualitas terbaik, harga terjangkau. Temukan kebutuhan sembako harian Anda di sini.</p>
+    <a href="#" class="btn-cta" role="button" tabindex="0">Belanja Sekarang</a>
+  </div>
+</section>
+
+<main class="container" role="main">
+
+  <section class="featured-products" aria-label="Produk unggulan">
+    <h2>Produk Unggulan</h2>
+    <div class="product-grid">
+      <article class="product-card" tabindex="0">
+        <img src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=400&q=70" alt="Gula Pasir" loading="lazy" />
+        <div class="product-info">
+          <h3>Gula Pasir Premium</h3>
+          <p>Gula pasir berkualitas tinggi, manis alami untuk semua kebutuhan memasak dan minuman.</p>
+          <div class="price">Rp25.000 / kg</div>
+        </div>
+      </article>
+      <article class="product-card" tabindex="0">
+        <img src="https://images.unsplash.com/photo-1590080877777-f8ea4d7247a7?auto=format&fit=crop&w=400&q=70" alt="Beras Organik" loading="lazy" />
+        <div class="product-info">
+          <h3>Beras Organik</h3>
+          <p>Beras sehat tanpa pestisida, sempurna untuk menu sehari-hari keluarga Anda.</p>
+          <div class="price">Rp12.000 / kg</div>
+        </div>
+      </article>
+      <article class="product-card" tabindex="0">
+        <img src="https://images.unsplash.com/photo-1585079549334-2d97d0cf21b9?auto=format&fit=crop&w=400&q=70" alt="Minyak Goreng" loading="lazy" />
+        <div class="product-info">
+          <h3>Minyak Goreng Kemasan</h3>
+          <p>Minyak goreng berkualitas tinggi, cocok untuk penggorengan dan masakan sehari-hari.</p>
+          <div class="price">Rp14.000 / liter</div>
+        </div>
+      </article>
+      <article class="product-card" tabindex="0">
+        <img src="https://images.unsplash.com/photo-1566404206868-730e6835d24b?auto=format&fit=crop&w=400&q=70" alt="Kopi Bubuk Arabika" loading="lazy" />
+        <div class="product-info">
+          <h3>Kopi Bubuk Arabika</h3>
+          <p>Kopi bubuk pilihan dengan aroma khas yang kuat dan rasa nikmat setiap pagi Anda.</p>
+          <div class="price">Rp45.000 / 250g</div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="blog-posts" aria-label="Artikel dan berita terbaru">
+    <h2>Artikel dan Tips</h2>
+    <article class="blog-post" tabindex="0">
+      <h4>5 Cara Menyimpan Beras Agar Tetap Awet</h4>
+      <time datetime="2024-05-10">27 Mei 2025</time>
+      <p>Mengungkap tips menyimpan beras agar tetap segar dan bebas dari serangga, agar kualitasnya terjaga lebih lama.</p>
+    </article>
+
+    <article class="blog-post" tabindex="0">
+      <h4>Panduan Memilih Minyak Goreng yang Sehat</h4>
+      <time datetime="2024-04-22">27 mei 2025</time>
+      <p>Memahami jenis minyak goreng yang baik untuk kesehatan dan memasak, serta tips memilih produk berkualitas di pasar.</p>
+    </article>
+
+    <article class="blog-post" tabindex="0">
+      <h4>Cara Memasak Kopi Tradisional yang Nikmat</h4>
+      <time datetime="2024-03-18">27 Mei 2025</time>
+      <p>Pelajari metode dan rahasia memasak kopi tradisional Indonesia yang kaya rasa dan aroma khas yang memikat.</p>
+    </article>
+
+    <article class="blog-post" tabindex="0">
+      <h4>Promo Spesial Ramadhan 2025</h4>
+      <time datetime="2024-02-28">28 Februari 2025</time>
+      <p>Dapatkan diskon dan paket sembako spesial selama bulan Ramadhan untuk memenuhi kebutuhan keluarga Anda.</p>
+    </article>
+  </section>
+
+  <aside class="sidebar" aria-label="Sidebar dengan kategori dan postingan populer">
+    <section class="sidebar-section categories" aria-labelledby="cat-title">
+      <h3 id="cat-title">Kategori</h3>
+      <ul class="category-list">
+        <li><a href="#" tabindex="0">Tips Memasak</a></li>
+        <li><a href="#" tabindex="0">Promo & Diskon</a></li>
+        <li><a href="#" tabindex="0">Produk Baru</a></li>
+        <li><a href="#" tabindex="0">Berita Toko</a></li>
+        <li><a href="#" tabindex="0">Kesehatan & Nutrisi</a></li>
+      </ul>
+    </section>
+
+    <section class="sidebar-section popular" aria-labelledby="pop-title">
+      <h3 id="pop-title">Artikel Populer</h3>
+      <ul class="popular-list" tabindex="0">
+        <li tabindex="0">
+          <span>Review Produk Gula Pasir</span>
+          <small>27 mei 2025</small>
+        </li>
+        <li tabindex="0">
+          <span>Kelebihan Beras Organik untuk Keluarga</span>
+          <small>27 mei 2025</small>
+        </li>
+        <li tabindex="0">
+          <span>Panduan Memilih Kopi Bubuk Arabika</span>
+          <small>27 mei 2025</small>
+        </li>
+        <li tabindex="0">
+          <span>Keuntungan Belanja di Toko sembako makmur</span>
+          <small>27 mei 2025</small>
+        </li>
+      </ul>
+    </section>
+  </aside>
+</main>
+
+<footer>
+  &copy; 2025 Blog Toko Makmur. Hak cipta dilindungi. Dibuat dengan dedikasi untuk kebutuhan sembako Anda.
+</footer>
+</body>
+</html>
